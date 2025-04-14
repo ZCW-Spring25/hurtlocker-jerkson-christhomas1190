@@ -27,6 +27,7 @@ public class MatchBuilder {
     }
 
     public Match build() {
+
         return new Match(value, matchNumber, startingIndex, endingIndex);
     }
 }

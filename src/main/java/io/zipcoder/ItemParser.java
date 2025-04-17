@@ -12,36 +12,36 @@ import java.util.regex.Pattern;
 
 public class ItemParser {
 
-    private int errorCount=0;
 //makes string a list of items
+    private int errorCount;
     public List<Item> parseItemList(String valueToParse) {
-        ArrayList<Item> items= new ArrayList<>();
-        String[] splitItems = valueToParse.split("##");
-        //split input by ## to separate objects
-        for(String singleItem: splitItems){
-            if(singleItem.isEmpty()){
-                continue;
-            }
-            try{
-                //check every item
-               Item item = parseSingleItem(singleItem);
-               //if successfully add to list
-               items.add(item);
 
-            }catch(ItemParseException e){
-                //counts errors
-                errorCount++;
+        ArrayList<Item> items = new ArrayList<>();
+            String[] splitItems = valueToParse.split("##");
+
+            for (String singleItem : splitItems) {
+                if (singleItem.isEmpty()) {
+                    continue;
+                }
+                try {
+                    // Attempt to parse the item and add it to the list
+                    Item item = parseSingleItem(singleItem);
+                    items.add(item); // Item is successfully parsed
+                } catch (ItemParseException e) {
+                    // Increment the error count when an exception occurs
+                    this.errorCount++;
+                }
             }
+
+            // Return the list of successfully parsed items
+            return items;
         }
-        //returns successful found objects
-        return items;
-    }
     //checks single items in string converts to Item object
     public Item parseSingleItem(String singleItem) throws ItemParseException {
         //finds key value pairs ignoring case
 
         singleItem=singleItem.replaceAll("##","").trim();
-        Pattern pattern = Pattern.compile("(?i)([a-z]+)[@:;^*%]([^@:;^*%]+)");
+        Pattern pattern = Pattern.compile("(?i)([a-z]+)[@:;^*%!]([^@:;^*%!]+)");
         Matcher matcher = pattern.matcher(singleItem);
         //stores pairs
         Map<String, String> fields= new HashMap<>();
